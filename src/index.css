@@ -27,3 +27,12 @@ input[type=search]:not(.browser-default), textarea.materialize-textarea{
 	padding: 27px 12px 10px;
 	border-bottom: none;
 }
+.MuiDrawer-root a[href^='#/invoice'] {
+    display: none;
+}
+.MuiDrawer-root a[href^='#/Supplier'] {
+    display: none;
+}
+.MuiDrawer-root a[href^='#/AssetTransaction'] {
+    display: none;
+}

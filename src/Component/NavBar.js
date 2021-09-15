@@ -22,6 +22,7 @@ export const AssetNavBar=()=>{
 		{name:'Asset',url:'/Asset'},
 		{name:'Invoice',url:'/invoice'},
 		{name:'Supplier',url:'/supplier'},
+		{name:'Transaction',url:'/AssetTransaction'},
 	]
 	return <NavBar links={links}/>
 }

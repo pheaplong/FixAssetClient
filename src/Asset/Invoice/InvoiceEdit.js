@@ -6,7 +6,7 @@ const InvoiceEdit=props=> {
 	const redirect = useRedirect();
   return (
     <Dialog
-      open={props.open}
+      open={true}
       onClose={() => {
         redirect("/invoice");
       }}
