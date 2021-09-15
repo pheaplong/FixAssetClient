@@ -40,7 +40,6 @@ const InvoiceCreate=props=> {
             optionValue="supId"
           />
           <DateInput fullWidth source="orderDate" />
-          {console.log(suppliers.data)}
           <DateInput fullWidth source="receivedDate" />
           <NumberInput fullWidth source="netTotal" />
           <NumberInput fullWidth source="tax" />

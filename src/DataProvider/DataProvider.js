@@ -49,23 +49,27 @@ export default ({ priKey, route }) => ({
     });
   },
 
-  getmanyreference: (resource, params) => {
+  getManyReference: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify({
-        ...params.filter,
-        [params.target]: params.id,
-      }),
-    };
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    // const query = {
+    //   sort: JSON.stringify([field, order]),
+    //   range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+    //   filter: JSON.stringify({
+    //     ...params.filter,
+    //     [params.target]: params.id,
+    //   }),
+    // };
+		const query=`${params.target}=${params.id}`
+    const url = `${apiUrl}/${route}?${query}`;
 
-    return httpClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get("content-range").split("/").pop(), 10),
-    }));
+    return httpClient(url)
+      .then(({ headers, json }) => {
+        return {
+          data: json.map((t) => ({ ...t, id: t[priKey] })),
+          total: json.length
+        };
+      })
   },
 
   update: (resource, params) =>
@@ -89,7 +93,7 @@ export default ({ priKey, route }) => ({
       method: "POST",
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
+      data: { ...params.data, id: json },
     })),
 
   delete: (resource, params) => {
@@ -118,11 +122,22 @@ export default ({ priKey, route }) => ({
   //#endregion
 
   getDataLookUpList: (resource, params) =>
-    httpClient(`${apiUrl}/datalookup/${resource}`)
+    httpClient(`${apiUrl}/DataLookUps/${resource}`)
 	.then(({ headers, json }) => {
       return {
         data: json.map((t) => ({ ...t, id: t.lookupId })),
         total: json.length
       };
     }),
+
+  //#region Asset Transaction
+  approveAssetTrn: (resource, params) =>
+    httpClient(`${apiUrl}/${route}/${params.id}/approval`, {
+      method: "PUT",
+    }).then(({ json }) => ({ data: json })),
+  rejectAssetTrn: (resource, params) =>
+    httpClient(`${apiUrl}/${route}/${params.id}/approval`, {
+      method: "DELETE",
+    }).then(({ json }) => ({ data: json })),
+  //#endregion
 });
